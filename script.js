@@ -47,12 +47,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // Event Listeners
   nextButtons.forEach(button => {
     button.addEventListener('click', function() {
-      const currentStep = parseInt(this.getAttribute('data-next')) - 1;
+      // Find the currently active step element
+      const activeStepElement = document.querySelector('.form-step.active');
+      // Extract the step number from the ID (e.g., "step1" -> 1)
+      const currentStepNumber = activeStepElement ? parseInt(activeStepElement.id.replace('step', '')) : 0;
+      // Calculate the zero-based index
+      const currentStepIndex = currentStepNumber - 1; 
+
       const nextStep = parseInt(this.getAttribute('data-next'));
       
-      if (currentStep === 0) {
+      // Validate personal info only if we are currently on the first step (index 0)
+      if (currentStepIndex === 0) { 
         if (!validatePersonalInfo()) {
-          return;
+          return; // Stop if validation fails
         }
       }
       
@@ -380,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Valider en fonction du type de champ
     if (!input.value.trim()) {
       input.classList.add('error');
-      errorElement.textContent = 'Ce champ est obligatoire';
+      errorElement.textContent = 'This field is required';
       return false;
     }
     
@@ -411,14 +418,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailValid = emailInput.value.trim() !== '' && !emailInput.classList.contains('error');
     const phoneValid = phoneInput.value.trim() !== '' && !phoneInput.classList.contains('error');
     
-    // Activer/désactiver le bouton en fonction de l'état de validation
-    if (nameValid && emailValid && phoneValid) {
-      step1NextButton.removeAttribute('disabled');
-      step1NextButton.classList.remove('disabled');
-    } else {
-      step1NextButton.setAttribute('disabled', 'disabled');
-      step1NextButton.classList.add('disabled');
-    }
+    // The rest of the function body (handling disabled attribute/class) is removed 
+    // to keep the button visually enabled regardless of input state.
+    // The actual validation happens on button click.
   }
 
   // Initialize the form with default plan
@@ -497,9 +499,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
      const formNav = formContainer.querySelector('.form-navigation');
-     if(formNav){
-        // Fixed navigation bar at the bottom of the screen
-        formNav.style.cssText = `
+     const activeStepNav = formContainer.querySelector('.form-step.active .form-navigation');
+
+     if(activeStepNav){
+        // Base styles for the fixed navigation bar
+        let navStyles = `
             position: fixed !important;
             bottom: 0 !important;
             left: 0 !important;
@@ -510,9 +514,19 @@ document.addEventListener('DOMContentLoaded', function() {
             padding: 1rem 1.5rem !important; /* Padding inside the bar */
             margin-top: 0 !important;
             display: flex !important; /* Use flex to position buttons inside */
-            justify-content: space-between !important; /* Space out Go Back and Next Step */
             align-items: center !important;
         `;
+
+        // Add justify-content only if NOT on step 1
+        const activeStepElement = formContainer.querySelector('.form-step.active');
+        if (!activeStepElement || activeStepElement.id !== 'step1') {
+            navStyles += `justify-content: space-between !important;`;
+        } else {
+            // For step 1, let the CSS rule (#step1 .form-navigation { justify-content: flex-end !important; }) handle alignment
+            navStyles += `justify-content: flex-end !important;`; // Explicitly set flex-end here to be safe
+        }
+
+        activeStepNav.style.cssText = navStyles;
      }
   }
 

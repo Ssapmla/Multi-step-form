@@ -498,6 +498,11 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
   padding-top: 2rem;
 }
 
+/* Specific rule for Step 1 to push the single button to the right */
+#step1 .form-navigation {
+  justify-content: flex-end !important;
+}
+
 .back-btn {
   background: none;
   border: none;
@@ -707,6 +712,11 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
   box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.08) !important;
   z-index: 1000 !important;
   margin-top: 0 !important; /* Override any auto margin */
+}
+
+/* Ensure step 1 nav button is on the right in forced mobile view */
+.force-mobile #step1 .form-navigation {
+  justify-content: flex-end !important;
 }
 
 /* Force mobile typography and specific element styles */
