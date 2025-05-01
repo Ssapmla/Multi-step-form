@@ -423,4 +423,161 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize the form with default plan
   selectPlan('arcade');
+
+  // View switcher functionality
+  const desktopViewBtn = document.getElementById('desktop-view');
+  const mobileViewBtn = document.getElementById('mobile-view');
+  const formContainer = document.querySelector('.form-container');
+
+  // Fonction pour définir la vue mobile
+  function setMobileView() {
+    // Apply classes
+    formContainer.classList.remove('force-desktop');
+    formContainer.classList.add('force-mobile');
+    mobileViewBtn.classList.add('active');
+    desktopViewBtn.classList.remove('active');
+    document.body.classList.remove('desktop-view');
+    document.body.classList.add('mobile-view');
+
+    // Apply inline styles to force mobile layout properties
+    formContainer.style.cssText = `
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        min-height: 100vh !important;
+        background-color: var(--magnolia) !important;
+    `;
+
+    // Ensure body alignment for mobile view scrolling
+    document.body.style.alignItems = 'flex-start';
+    document.body.style.justifyContent = 'flex-start';
+
+    // Style children via JS
+    const sidebar = formContainer.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.style.cssText = `
+            height: 172px !important;
+            width: 100% !important;
+            background-image: url("assets/images/bg-sidebar-mobile.svg") !important;
+            background-position: center !important;
+            background-size: cover !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            padding: 2rem 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+        `;
+    }
+    const formContent = formContainer.querySelector('.form-content');
+    if (formContent) {
+        formContent.style.cssText = `
+            margin: -60px auto 5rem auto !important;
+            background-color: var(--white) !important;
+            border-radius: 10px !important;
+            width: calc(100% - 2rem) !important;
+            max-width: 450px !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+            padding: 2rem 1.5rem !important;
+            position: relative !important;
+            display: flex !important;
+            flex-direction: column !important;
+            height: auto !important; /* Let height adjust */
+            min-height: auto !important; /* Remove min-height constraint */
+            flex-grow: 0 !important; /* Do not force grow */
+        `;
+    }
+    // Remove bottom padding from steps (nav is not fixed anymore)
+    formContainer.querySelectorAll('.form-step').forEach(step => {
+        step.style.paddingBottom = '0'; // Reset padding
+    });
+
+     const formNav = formContainer.querySelector('.form-navigation');
+     if(formNav){
+        // Navigation inside the card, at the bottom
+        formNav.style.cssText = `
+            position: relative !important; /* Not fixed */
+            bottom: auto !important;
+            left: auto !important;
+            width: 100% !important; /* Takes width of parent padding */
+            background-color: transparent !important; /* Transparent inside card */
+            box-shadow: none !important; /* No shadow inside card */
+            z-index: auto !important;
+            padding: 2rem 0 0 0 !important; /* Padding top only */
+            margin-top: auto !important; /* Push to bottom of flex container */
+        `;
+     }
+  }
+
+  // Fonction pour définir la vue desktop
+  function setDesktopView() {
+      // Apply classes
+      formContainer.classList.remove('force-mobile');
+      formContainer.classList.add('force-desktop');
+      desktopViewBtn.classList.add('active');
+      mobileViewBtn.classList.remove('active');
+      document.body.classList.remove('mobile-view');
+      document.body.classList.add('desktop-view');
+
+      // Remove or reset inline styles applied by setMobileView
+      formContainer.style.cssText = '';
+      document.body.style.alignItems = '';
+      document.body.style.justifyContent = '';
+
+      // Remove inline styles from children
+      const sidebar = formContainer.querySelector('.sidebar');
+      if (sidebar) sidebar.style.cssText = '';
+      const formContent = formContainer.querySelector('.form-content');
+      if (formContent) formContent.style.cssText = '';
+      formContainer.querySelectorAll('.form-step').forEach(step => {
+          step.style.paddingBottom = ''; // Ensure padding is removed
+      });
+      const formNav = formContainer.querySelector('.form-navigation');
+      if (formNav) formNav.style.cssText = '';
+  }
+
+  // Ajouter les écouteurs d'événements sur les boutons
+  desktopViewBtn.addEventListener('click', setDesktopView);
+  mobileViewBtn.addEventListener('click', setMobileView);
+  
+  // Définir la vue par défaut en fonction de la largeur d'écran initiale
+  if (window.innerWidth <= 768) {
+    setMobileView();
+  } else {
+    setDesktopView();
+  }
+  
+  // Vérifier si l'utilisateur a déjà choisi une vue spécifique
+  if (localStorage.getItem('preferredView') === 'mobile') {
+    setMobileView();
+  } else if (localStorage.getItem('preferredView') === 'desktop') {
+    setDesktopView();
+  }
+  
+  // Enregistrer la préférence de l'utilisateur
+  desktopViewBtn.addEventListener('click', function() {
+    localStorage.setItem('preferredView', 'desktop');
+  });
+  
+  mobileViewBtn.addEventListener('click', function() {
+    localStorage.setItem('preferredView', 'mobile');
+  });
+
+  /*
+  // Désactiver le changement automatique de vue lors du redimensionnement
+  window.addEventListener('resize', function() {
+    // Ne rien faire, garder la vue sélectionnée par l'utilisateur
+    // Cela empêche le changement automatique de vue quand on redimensionne la fenêtre
+    // Ou, alternativement, forcer la vue stockée :
+    if (localStorage.getItem('preferredView') === 'mobile') {
+      setMobileView();
+    } else if (localStorage.getItem('preferredView') === 'desktop') {
+      setDesktopView();
+    } // Si aucune préférence, laisser le CSS gérer via media queries ? Ou revenir à la détection ?
+     // Pour l'instant, on force la vue choisie.
+  });
+  */
 }); 
