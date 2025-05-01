@@ -24,9 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmButton = document.querySelector('.confirm-btn');
   const changeLink = document.querySelector('.change-link');
   
+  // Form inputs for step 1
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const phoneInput = document.getElementById('phone');
+  
+  // Bouton Next Step pour l'étape 1
+  const step1NextButton = document.querySelector('#step1 .next-btn');
+  
   // Set initial state
   updateSummary();
   updateSelectedAddons();
+  updateNextButtonState();
   
   // Mark checked add-ons as selected
   addonCheckboxes.forEach(checkbox => {
@@ -88,6 +97,44 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     const targetStep = parseInt(this.getAttribute('data-step'));
     goToStep(targetStep);
+  });
+
+  // Ajouter des écouteurs d'événements pour valider les champs lors de la saisie
+  nameInput.addEventListener('blur', function() {
+    validateField(this, 'name');
+    updateNextButtonState();
+  });
+  
+  emailInput.addEventListener('blur', function() {
+    validateField(this, 'email');
+    updateNextButtonState();
+  });
+  
+  phoneInput.addEventListener('blur', function() {
+    validateField(this, 'phone');
+    updateNextButtonState();
+  });
+  
+  // Valider les champs pendant la saisie pour donner un retour immédiat
+  nameInput.addEventListener('input', function() {
+    if (this.classList.contains('error')) {
+      validateField(this, 'name');
+    }
+    updateNextButtonState();
+  });
+  
+  emailInput.addEventListener('input', function() {
+    if (this.classList.contains('error')) {
+      validateField(this, 'email');
+    }
+    updateNextButtonState();
+  });
+  
+  phoneInput.addEventListener('input', function() {
+    if (this.classList.contains('error')) {
+      validateField(this, 'phone');
+    }
+    updateNextButtonState();
   });
 
   // Functions
@@ -225,55 +272,37 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function validatePersonalInfo() {
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    const nameError = document.getElementById('name-error');
-    const emailError = document.getElementById('email-error');
-    const phoneError = document.getElementById('phone-error');
-    
     let isValid = true;
     
-    // Reset errors
-    nameInput.classList.remove('error');
-    emailInput.classList.remove('error');
-    phoneInput.classList.remove('error');
-    nameError.textContent = '';
-    emailError.textContent = '';
-    phoneError.textContent = '';
-    
-    // Validate name
-    if (!nameInput.value.trim()) {
-      nameInput.classList.add('error');
-      nameError.textContent = 'This field is required';
+    // Valider chaque champ individuellement
+    if (!validateField(nameInput, 'name')) {
       isValid = false;
     }
     
-    // Validate email
-    if (!emailInput.value.trim()) {
-      emailInput.classList.add('error');
-      emailError.textContent = 'This field is required';
-      isValid = false;
-    } else if (!isValidEmail(emailInput.value)) {
-      emailInput.classList.add('error');
-      emailError.textContent = 'Invalid email format';
+    if (!validateField(emailInput, 'email')) {
       isValid = false;
     }
     
-    // Validate phone
-    if (!phoneInput.value.trim()) {
-      phoneInput.classList.add('error');
-      phoneError.textContent = 'This field is required';
+    if (!validateField(phoneInput, 'phone')) {
       isValid = false;
     }
     
-    // Save data if valid
+    // Enregistrer les données si tout est valide
     if (isValid) {
       formData.personalInfo = {
         name: nameInput.value.trim(),
         email: emailInput.value.trim(),
         phone: phoneInput.value.trim()
       };
+    } else {
+      // Ajouter l'animation de secousse si la validation échoue
+      const form = document.getElementById('personal-info-form');
+      form.classList.add('shake');
+      
+      // Supprimer la classe après la fin de l'animation
+      setTimeout(() => {
+        form.classList.remove('shake');
+      }, 600); // Durée de l'animation
     }
     
     return isValid;
@@ -282,6 +311,13 @@ document.addEventListener('DOMContentLoaded', function() {
   function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+  
+  function isValidPhone(phone) {
+    // Accepte les formats communs de numéros de téléphone internationaux
+    // Exemples: +1 123 456 7890, (123) 456-7890, 123-456-7890, etc.
+    const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,3}[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,4}$/;
+    return phoneRegex.test(phone);
   }
 
   // Helper functions for pricing
@@ -333,6 +369,56 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     return isYearly ? prices[addon].yearly : prices[addon].monthly;
+  }
+
+  // Fonction pour valider un champ spécifique
+  function validateField(input, fieldType) {
+    const errorElement = document.getElementById(`${fieldType}-error`);
+    input.classList.remove('error');
+    errorElement.textContent = '';
+    
+    // Valider en fonction du type de champ
+    if (!input.value.trim()) {
+      input.classList.add('error');
+      errorElement.textContent = 'Ce champ est obligatoire';
+      return false;
+    }
+    
+    switch (fieldType) {
+      case 'email':
+        if (!isValidEmail(input.value)) {
+          input.classList.add('error');
+          errorElement.textContent = 'Format d\'email invalide';
+          return false;
+        }
+        break;
+      case 'phone':
+        if (!isValidPhone(input.value)) {
+          input.classList.add('error');
+          errorElement.textContent = 'Format de téléphone invalide';
+          return false;
+        }
+        break;
+    }
+    
+    return true;
+  }
+
+  // Fonction pour vérifier si tous les champs du formulaire sont remplis correctement
+  function updateNextButtonState() {
+    // Vérifier si tous les champs sont remplis et valides
+    const nameValid = nameInput.value.trim() !== '' && !nameInput.classList.contains('error');
+    const emailValid = emailInput.value.trim() !== '' && !emailInput.classList.contains('error');
+    const phoneValid = phoneInput.value.trim() !== '' && !phoneInput.classList.contains('error');
+    
+    // Activer/désactiver le bouton en fonction de l'état de validation
+    if (nameValid && emailValid && phoneValid) {
+      step1NextButton.removeAttribute('disabled');
+      step1NextButton.classList.remove('disabled');
+    } else {
+      step1NextButton.setAttribute('disabled', 'disabled');
+      step1NextButton.classList.add('disabled');
+    }
   }
 
   // Initialize the form with default plan
