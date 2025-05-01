@@ -616,41 +616,47 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
     margin-bottom: 5rem;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     overflow-y: auto;
+    position: relative;
   }
 
   .form-step {
-    padding-bottom: 2rem;
+    padding-bottom: 4rem;
   }
 
   .plan-options {
     flex-direction: column;
     margin-bottom: 1rem;
+    gap: 0.5rem;
   }
 
   .plan-card {
     display: flex;
     align-items: center;
-    padding: 1rem;
-    margin-bottom: 0.75rem;
+    padding: 0.8rem;
+    margin-bottom: 0;
+    height: auto;
   }
 
   .plan-icon {
     margin-bottom: 0;
     margin-right: 1rem;
     min-width: 40px;
+    height: 35px;
   }
 
-  .plan-details {
-    flex: 1;
+  .plan-details h3 {
+    margin-bottom: 0.1rem;
   }
 
   .addon-options {
     margin-bottom: 1rem;
+    gap: 0.5rem;
   }
 
   .addon-card {
-    padding: 1rem;
-    margin-bottom: 0.75rem;
+    padding: 0.8rem;
+    margin-bottom: 0;
+    height: auto;
   }
 
   .form-navigation {
@@ -667,12 +673,16 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
 
   h1 {
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
-
+  
   .step-description {
     font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .billing-toggle {
+    margin-bottom: 1rem;
   }
 
   .form-group {
@@ -687,7 +697,7 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
   }
 
   .form-step#step1 {
-    min-height: calc(100vh - 250px);
+    min-height: auto;
   }
 
   .error-message {
@@ -759,5 +769,65 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
   #thank-you p {
     font-size: 0.9rem;
     padding: 0 1rem;
+  }
+
+  .checkbox-custom {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.8rem;
+  }
+
+  .addon-info {
+    padding-right: 0.5rem;
+  }
+
+  .addon-info h3 {
+    margin-bottom: 0.1rem;
+  }
+
+  /* Ajuster les marges entre les éléments pour un design plus compact */
+  .plan-options, .addon-options, .billing-toggle {
+    margin-bottom: 1rem;
+  }
+
+  /* Réduire les marges pour les cartes sur tablette/petit écran */
+  @media (min-width: 500px) and (max-width: 768px) {
+    .plan-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    
+    .plan-card {
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto;
+    }
+    
+    .plan-icon {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .form-content {
+    padding: 1.5rem 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 4.5rem;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  .step-description {
+    font-size: 0.85rem;
+  }
+
+  .form-navigation {
+    padding: 0.8rem 1rem;
   }
 } 
