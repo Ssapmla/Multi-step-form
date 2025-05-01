@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.remove('desktop-view');
     document.body.classList.add('mobile-view');
 
-    // Apply inline styles to force mobile layout properties
+    // Apply inline styles to force mobile layout properties for container
     formContainer.style.cssText = `
         flex-direction: column !important;
         width: 100% !important;
@@ -474,40 +474,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const formContent = formContainer.querySelector('.form-content');
     if (formContent) {
+        // Adjust card styling, reduce bottom margin as nav bar is fixed below
         formContent.style.cssText = `
-            margin: -60px auto 5rem auto !important;
+            margin: -60px auto 2rem auto !important; /* Reduced bottom margin */
             background-color: var(--white) !important;
             border-radius: 10px !important;
             width: calc(100% - 2rem) !important;
             max-width: 450px !important;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
-            padding: 2rem 1.5rem !important;
+            padding: 2rem 1.5rem 1.5rem 1.5rem !important; /* Reduce bottom padding slightly */
             position: relative !important;
             display: flex !important;
             flex-direction: column !important;
-            height: auto !important; /* Let height adjust */
-            min-height: auto !important; /* Remove min-height constraint */
-            flex-grow: 0 !important; /* Do not force grow */
+            height: auto !important;
+            min-height: auto !important;
+            flex-grow: 0 !important;
         `;
     }
-    // Remove bottom padding from steps (nav is not fixed anymore)
+    // Re-add bottom padding to steps for fixed nav bar
     formContainer.querySelectorAll('.form-step').forEach(step => {
-        step.style.paddingBottom = '0'; // Reset padding
+        step.style.paddingBottom = '6rem'; // Space for fixed nav
     });
 
      const formNav = formContainer.querySelector('.form-navigation');
      if(formNav){
-        // Navigation inside the card, at the bottom
+        // Fixed navigation bar at the bottom of the screen
         formNav.style.cssText = `
-            position: relative !important; /* Not fixed */
-            bottom: auto !important;
-            left: auto !important;
-            width: 100% !important; /* Takes width of parent padding */
-            background-color: transparent !important; /* Transparent inside card */
-            box-shadow: none !important; /* No shadow inside card */
-            z-index: auto !important;
-            padding: 2rem 0 0 0 !important; /* Padding top only */
-            margin-top: auto !important; /* Push to bottom of flex container */
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            background-color: var(--white) !important; /* White background */
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.08) !important; /* Shadow */
+            z-index: 1000 !important;
+            padding: 1rem 1.5rem !important; /* Padding inside the bar */
+            margin-top: 0 !important;
+            display: flex !important; /* Use flex to position buttons inside */
+            justify-content: space-between !important; /* Space out Go Back and Next Step */
+            align-items: center !important;
         `;
      }
   }
