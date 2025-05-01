@@ -664,7 +664,7 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 1rem 1.5rem;
+    padding: 0.7rem 1rem !important;
     background-color: var(--white);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
     margin-top: 0;
@@ -745,11 +745,11 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
   }
 
   .summary-addon-name {
-    font-size: 0.8rem;
+    font-size: 0.8rem !important;
   }
 
   .summary-addon-price {
-    font-size: 0.8rem;
+    font-size: 0.8rem !important;
   }
 
   .total-section {
@@ -759,175 +759,216 @@ input[type="checkbox"]:checked + .checkbox-custom:after {
   }
 
   .total-label {
-    font-size: 0.8rem;
+    font-size: 0.8rem !important;
   }
 
   .total-cost {
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
   }
 
-  /* Ajustements généraux pour rendre tout plus compact */
-  .form-group {
-    margin-bottom: 0.8rem;
+  /* Reset complet pour les cartes sur mobile */
+  .plan-card, .addon-card, .summary-section {
+    display: flex;
+    height: fit-content !important;
+    min-height: 0 !important;
+    padding: 0.6rem !important;
+    margin-bottom: 0.6rem !important; 
+    flex: 0 0 auto !important;
+    box-sizing: border-box;
   }
 
-  .plan-card, .addon-card {
-    padding: 0.7rem;
-    height: auto;
-    flex-shrink: 0;
+  /* Forcer la suppression des marges excessives */
+  .plan-options, .addon-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem !important;
+    margin-bottom: 1rem !important;
   }
 
+  .plan-options > *, .addon-options > * {
+    margin: 0 !important;
+  }
+
+  /* Ajuster strictement les éléments intérieurs */
   .plan-icon {
-    height: 30px;
-    width: 30px;
-    margin-right: 0.8rem;
-    margin-bottom: 0;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 0.6rem 0 0 !important;
+    flex: 0 0 auto !important;
   }
 
-  .addon-info h3, .plan-details h3 {
-    font-size: 0.9rem;
-    margin-bottom: 0;
-    line-height: 1.2;
+  .plan-details, .addon-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  .addon-info p, .plan-price {
-    font-size: 0.75rem;
-    line-height: 1.2;
-    margin: 0.2rem 0 0 0;
+  .plan-details h3, .addon-info h3 {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .plan-price, .addon-info p {
+    margin: 0.1rem 0 0 0 !important;
+    padding: 0 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.1 !important;
   }
 
   .addon-price {
-    font-size: 0.75rem;
+    font-size: 0.75rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-self: center;
     white-space: nowrap;
   }
 
-  .checkbox-custom {
-    width: 16px;
-    height: 16px;
-    margin-right: 0.7rem;
-  }
-
-  .checkbox-custom:after {
-    width: 4px;
-    height: 8px;
-    top: 1px;
-    left: 5px;
-  }
-
   .yearly-offer {
-    margin-top: 0.2rem;
-    font-size: 0.7rem;
+    margin: 0.1rem 0 0 0 !important;
+    padding: 0 !important;
+    font-size: 0.7rem !important;
+    line-height: 1.1 !important;
   }
 
-  .billing-toggle {
-    padding: 0.7rem;
-    gap: 1rem;
+  .checkbox-custom {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 0.6rem !important;
+    flex: 0 0 auto !important;
   }
 
-  .billing-option {
-    font-size: 0.85rem;
-  }
-
-  /* Ajustements pour le résumé */
-  #step4 .summary-section {
-    margin-bottom: 1rem;
-  }
-
+  /* Ajustements spécifiques pour l'étape de résumé */
   .summary-plan {
-    padding-bottom: 1rem;
-    margin-bottom: 0.75rem;
+    padding: 0 0 0.5rem 0 !important;
+    margin: 0 0 0.5rem 0 !important;
+    border-bottom-width: 1px !important;
   }
 
   .summary-addon {
-    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 0.4rem 0 !important;
+    padding: 0 !important;
   }
 
-  .plan-info h3, .summary-addon-name, .summary-addon-price {
-    font-size: 0.85rem;
+  .total-section {
+    margin: 0.8rem 0 0 0 !important;
+    padding: 0 0.6rem !important;
   }
 
+  /* Ajustements généraux de l'espacement du formulaire */
+  .form-step {
+    padding-bottom: 4.5rem !important;
+  }
+
+  .form-step > h1 {
+    margin: 0 0 0.3rem 0 !important;
+    font-size: 1.3rem !important;
+  }
+
+  .step-description {
+    margin: 0 0 1rem 0 !important;
+    font-size: 0.85rem !important;
+  }
+
+  .form-group {
+    margin-bottom: 0.7rem !important;
+  }
+
+  .billing-toggle {
+    padding: 0.6rem !important;
+    margin: 0.8rem 0 !important;
+  }
+
+  /* Styles pour la checkbox */
+  .checkbox-custom:after {
+    width: 4px !important;
+    height: 8px !important;
+    top: 1px !important;
+    left: 5px !important;
+    border-width: 0 2px 2px 0 !important;
+  }
+  
+  /* Styles spécifiques pour les boutons et la navigation */
+  .form-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.7rem 1rem !important;
+    background-color: var(--white);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 0;
+    z-index: 100;
+  }
+  
+  .next-btn, .confirm-btn {
+    padding: 0.6rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .back-btn {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Styles pour les labels et textes de résumé */
+  .summary-addon-name, .summary-addon-price {
+    font-size: 0.8rem !important;
+  }
+  
   .total-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem !important;
   }
-
+  
   .total-cost {
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
   }
-
+  
+  .billing-option {
+    font-size: 0.85rem !important;
+  }
+  
   /* Ajustements pour l'écran de remerciement */
   #thank-you .thank-you-content {
-    padding: 2rem 0;
+    padding: 2rem 0 !important;
   }
-
+  
   .thank-you-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 1.5rem;
+    width: 60px !important;
+    height: 60px !important;
+    margin-bottom: 1.5rem !important;
   }
-
+  
   #thank-you p {
-    font-size: 0.9rem;
-    padding: 0 1rem;
+    font-size: 0.9rem !important;
+    padding: 0 1rem !important;
   }
+}
 
-  .checkbox-custom {
-    width: 18px;
-    height: 18px;
-    margin-right: 0.8rem;
+/* Styles spécifiques pour les tablettes et petits écrans */
+@media (min-width: 500px) and (max-width: 768px) {
+  .plan-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
   }
-
-  .addon-info {
-    padding-right: 0.5rem;
+  
+  .plan-card {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
   }
-
-  .addon-info h3 {
-    margin-bottom: 0.1rem;
-  }
-
-  /* Ajuster les marges entre les éléments pour un design plus compact */
-  .plan-options, .addon-options, .billing-toggle {
-    margin-bottom: 1rem;
-  }
-
-  /* Réduire les marges pour les cartes sur tablette/petit écran */
-  @media (min-width: 500px) and (max-width: 768px) {
-    .plan-options {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem;
-    }
-    
-    .plan-card {
-      flex-direction: column;
-      align-items: flex-start;
-      height: auto;
-    }
-    
-    .plan-icon {
-      margin-right: 0;
-      margin-bottom: 1rem;
-    }
-  }
-
-  /* Styles des boutons */
-  .next-btn, .confirm-btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .back-btn {
-    font-size: 0.9rem;
-  }
-
-  /* Assurer que les boutons de navigation ne prennent pas trop de place */
-  .form-navigation {
-    padding: 0.8rem 1rem;
-  }
-
-  /* Assurer que la zone des boutons reste compacte */
-  #step4 .form-navigation {
-    margin-top: 1rem;
+  
+  .plan-icon {
+    margin-right: 0 !important;
+    margin-bottom: 1rem !important;
   }
 }
 
